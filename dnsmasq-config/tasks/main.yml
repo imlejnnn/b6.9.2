@@ -1,0 +1,11 @@
+---
+# tasks file for dnsmasq-config
+- name: dnsmasq config file
+  copy:
+    src: dnsmasq.conf
+    dest: dnsmasq.conf
+
+- name: resolv file
+  copy:
+    src: resolv.dnsmasq
+    dest: /etc/resolv.dnsmasq

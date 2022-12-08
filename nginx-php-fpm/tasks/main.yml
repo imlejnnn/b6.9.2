@@ -1,0 +1,34 @@
+---
+# tasks file for nginx-php-fpm
+- name: Install nginx, php-fpm packages
+  ansible.builtin.yum:
+    name:
+      - nginx
+      - php-fpm
+    state: present
+
+- name: Put nginx config file
+  copy:
+    src: test-server.conf
+    dest: /etc/nginx/conf.d/test-server.conf
+
+- name: Create /opt/nginx/ansible
+  file:
+    path: /opt/nginx/ansible
+    state: directory
+
+- name: Put index.php file
+  copy:
+    src: index.php
+    dest: /opt/nginx/ansible/index.php
+
+- name: Make sure service "nginx" running
+  systemd:
+    state: started
+    name: nginx
+
+- name: Make sure service "php-fpm" running
+  systemd:
+    state: started
+    name: php-fpm
+

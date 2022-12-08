@@ -1,0 +1,32 @@
+- hosts: test
+  tasks:
+    - name: Create group
+      group:
+        name: superusers
+        state: present
+      become: true
+
+    - name: Add user1
+      user:
+        name: "user1"
+        groups: 'superusers'
+        append: yes
+        state: present
+      become: true
+
+    - name: Add user2
+      user:
+        name: "user2"
+        groups: 'superusers'
+        append: yes
+        state: present
+      become: true
+
+    - name: Allow 'superusers' group to have sudo
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^%superusers'
+        line: '%superusers ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+      become: true
